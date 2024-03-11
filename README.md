@@ -7,7 +7,7 @@
 
 ## Installation
 We provide a simple installation script that, by default, sets up a conda environment with Python 3.9, PyTorch 1.13, and CUDA 11.6.
-
+##### Python 3.9; CUDA 11.6; PyTorch 1.13.1; PyTorch3D 0.7.2 (prebuilt wheel)
 ```.bash
 # This Script Assumes Python 3.9, CUDA 11.6
 # download prebuilt wheel for pytorch3d first:
@@ -25,7 +25,9 @@ conda activate $ENV_NAME
 # Install PyTorch, torchvision, and PyTorch3D using pip and prebuilt wheel
 python -m pip install torch==1.13.1+cu116 torchvision==0.14.1+cu116 torchaudio==0.13.1 --extra-index-url https://download.pytorch.org/whl/cu116
 python -m pip install /home/openark/Desktop/PoseDiffusion/pose_diffusion/pytorch3d-0.7.2-cp39-cp39-linux_x86_64.whl
-
+```
+##### HLoc; pycolmap>=0.6.0
+```
 # Install pip packages
 python -m pip install hydra-core --upgrade
 python -m pip install omegaconf opencv-python einops visdom 
