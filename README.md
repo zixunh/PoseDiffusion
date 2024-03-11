@@ -10,6 +10,8 @@ We provide a simple installation script that, by default, sets up a conda enviro
 
 ```.bash
 # This Script Assumes Python 3.9, CUDA 11.6
+# download prebuilt wheel for pytorch3d first:
+# [pytorch3d-0.7.2-cp39-cp39-linux_x86_64.whl](https://dl.fbaipublicfiles.com/pytorch3d/packaging/wheels/py39_cu116_pyt1130/pytorch3d-0.7.2-cp39-cp39-linux_x86_64.whl)
 
 conda deactivate
 
@@ -46,6 +48,9 @@ Download the model checkpoint trained on Co3D from [Dropbox](https://www.dropbox
 ### 2. Run the Demo
 
 ```.bash
+# run visdom server
+visdom
+# run demo
 python demo.py image_folder="samples/apple" ckpt="/PATH/TO/DOWNLOADED/CKPT"
 ```
 
