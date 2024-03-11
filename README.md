@@ -59,6 +59,8 @@ You can experiment with your own data by specifying a different `image_folder`.
 
 On a Quadro GP100 GPU, the inference time for a 20-frame sequence is approximately 0.8 seconds without GGS and around 80 seconds with GGS (including 20 seconds for matching extraction).
 
+On a 3080, the inference time for a 20-frame sequence is approximately 5.07 seconds without GGS and around 170.03 seconds with GGS (including 20 seconds for matching extraction).
+
 You can choose to enable or disable GGS (or other settings) in `./cfgs/default.yaml`.
 
 We use [Visdom](https://github.com/fossasia/visdom) by default for visualization. Ensure your Visdom settings are correctly configured to visualize the results accurately. However, Visdom is not necessary for running the model.
