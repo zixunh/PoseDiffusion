@@ -29,7 +29,7 @@ python -m pip install hydra-core --upgrade
 python -m pip install omegaconf opencv-python einops visdom 
 python -m pip install accelerate==0.24.0
 
-# Install HLoc for extracting 2D matches (optional if GGS is not needed)
+# Install HLoc for extracting 2D matches (optional if GGS is not needed); pycolmap>=0.6.0
 git clone --recursive https://github.com/cvg/Hierarchical-Localization.git dependency/hloc
 
 cd dependency/hloc
