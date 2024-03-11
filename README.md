@@ -63,6 +63,14 @@ You can choose to enable or disable GGS (or other settings) in `./cfgs/default.y
 
 We use [Visdom](https://github.com/fossasia/visdom) by default for visualization. Ensure your Visdom settings are correctly configured to visualize the results accurately. However, Visdom is not necessary for running the model.
 
+Umeyama's Algorithm is used to align the predicted camera poses onto groundtruth:
+```
+# 7dof alignment, using Umeyama's algorithm
+pred_cameras_aligned = corresponding_cameras_alignment(
+    cameras_src=pred_cameras, cameras_tgt=gt_cameras, estimate_scale=True, mode="extrinsics", eps=1e-9
+)
+```
+
 ## Training
 
 ### 1. Preprocess Annotations
