@@ -33,7 +33,7 @@ from util.metric import compute_ARE
 from visdom import Visdom
 
 
-@hydra.main(config_path="../cfgs/", config_name="default")
+@hydra.main(config_path="../cfgs/", config_name="default_debug")
 def demo(cfg: DictConfig) -> None:
     OmegaConf.set_struct(cfg, False)
     print("Model Config:")

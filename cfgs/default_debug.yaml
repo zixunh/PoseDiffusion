@@ -5,7 +5,7 @@ seed: 0
 
 GGS:
     enable: True
-    start_step: 10
+    start_step: 1
     learning_rate: 0.01
     iter_num: 100
     sampson_max: 10
