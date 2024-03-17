@@ -60,7 +60,7 @@ You can experiment with your own data by specifying a different `image_folder`.
 
 On a RTX 3080 Ti, the inference time for a 20-frame sequence is approximately 5.07 seconds without GGS and around 170.03 seconds with GGS (including matching extraction). 
 
-On a TITAN RTX, the inference time for a 20-frame sequence is approximately 1.22 seconds without GGS and around 112.07 seconds with GGS (22.21 seconds if only one step).
+On a TITAN RTX, the inference time for a 20-frame sequence is approximately 1.22 seconds (r_err: 3.06) without GGS and around 112.07 seconds (r_err: 2.15) with GGS (22.21 seconds if only one step; r_err: 2.38).
 
 You can choose to enable or disable GGS (or other settings) in `./cfgs/default.yaml`.
 
