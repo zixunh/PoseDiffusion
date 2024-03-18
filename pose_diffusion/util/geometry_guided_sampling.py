@@ -22,6 +22,7 @@ def geometry_guided_sampling(model_mean: torch.Tensor, t: int, matches_dict: Dic
     kp1 = _to_device(matches_dict["kp1"])
     kp2 = _to_device(matches_dict["kp2"])
     i12 = _to_device(matches_dict["i12"])
+    # print(kp1.shape, kp2.shape, i12.shape)
 
     pair_idx = i12[:, 0] * b + i12[:, 1]
     pair_idx = pair_idx.long()
@@ -45,7 +46,7 @@ def geometry_guided_sampling(model_mean: torch.Tensor, t: int, matches_dict: Dic
     }
 
     # conduct GGS
-    model_mean = GGS_optimize(model_mean, t, processed_matches, **GGS_cfg)
+    model_mean = GGS_optimize(model_mean, t, processed_matches, **GGS_cfg) #[B, frame_num, pose_dim]
 
     # Optimize FL, R, and T separately
     model_mean = GGS_optimize(
@@ -61,6 +62,7 @@ def geometry_guided_sampling(model_mean: torch.Tensor, t: int, matches_dict: Dic
     )  # only optimize T
 
     model_mean = GGS_optimize(model_mean, t, processed_matches, **GGS_cfg)
+
     return model_mean
 
 

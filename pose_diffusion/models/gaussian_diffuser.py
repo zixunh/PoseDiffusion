@@ -262,21 +262,23 @@ class GaussianDiffusion(nn.Module):
         ################################################################################
 
         b, *_, device = *x.shape, x.device
-        batched_times = torch.full((x.shape[0],), t, device=x.device, dtype=torch.long)
+        batched_times = torch.full((x.shape[0],), t, device=x.device, dtype=torch.long) #t in timesteps
         model_mean, _, model_log_variance, x_start = self.p_mean_variance(
             x=x, t=batched_times, z=z, x_self_cond=x_self_cond, clip_denoised=clip_denoised
-        )
+        )# denoise --> update mean and variance; and then sampling
 
         if cond_fn is not None and t < cond_start_step:
             # print(model_mean[...,3:7].norm(dim=-1, keepdim=True))
             # tmp = model_mean.clone()
-            model_mean = cond_fn(model_mean, t)
+            # print(cond_fn)
+            model_mean = cond_fn(model_mean, t) #GGS!!!!!!!
             # diff_norm = torch.norm(tmp-model_mean)
             # print(f"the diff norm is {diff_norm}")
             noise = 0.0
         else:
             noise = torch.randn_like(x) if t > 0 else 0.0  # no noise if t == 0
 
+        # print(model_mean.shape, model_log_variance.shape, noise.shape) #[B,frame_num,pose_dim][1,1,1][B,frame_num,pose_dim]
         pred = model_mean + (0.5 * model_log_variance).exp() * noise
 
         return pred, x_start
@@ -288,14 +290,14 @@ class GaussianDiffusion(nn.Module):
         # Init here
         pose = torch.randn(shape, device=device) #[B, frame_num, pose_dim(t+r+fl)]
 
-        x_start = None
+        x_start = None 
 
         pose_process = []
         pose_process.append(pose.unsqueeze(0))
 
-        for t in reversed(range(0, self.num_timesteps)):
+        for t in reversed(range(0, self.num_timesteps)): #self.num_timesteps=100
             pose, _ = self.p_sample(x=pose, t=t, z=z, cond_fn=cond_fn, cond_start_step=cond_start_step)
-            pose_process.append(pose.unsqueeze(0))
+            pose_process.append(pose.unsqueeze(0)) # history storing for animation
 
         return pose, torch.cat(pose_process)
 
@@ -303,6 +305,7 @@ class GaussianDiffusion(nn.Module):
     def sample(self, shape, z, cond_fn=None, cond_start_step=0):
         # TODO: add more variants
         sample_fn = self.p_sample_loop
+        # print(shape, z.shape, cond_fn, cond_start_step) # shape: target_shape; z: input_shape; cond_fn: GGS/None; cond_start_step: 1
         return sample_fn(shape, z=z, cond_fn=cond_fn, cond_start_step=cond_start_step)
 
     def p_losses(self, x_start, t, z=None, noise=None):
