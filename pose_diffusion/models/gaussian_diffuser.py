@@ -286,7 +286,7 @@ class GaussianDiffusion(nn.Module):
         batch, device = shape[0], self.betas.device
 
         # Init here
-        pose = torch.randn(shape, device=device)
+        pose = torch.randn(shape, device=device) #[B, frame_num, pose_dim(t+r+fl)]
 
         x_start = None
 

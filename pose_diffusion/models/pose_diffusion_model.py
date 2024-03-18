@@ -102,12 +102,12 @@ class PoseDiffusionModel(nn.Module):
             PerspectiveCameras: PyTorch3D camera object.
         """
 
-        shapelist = list(image.shape)
+        shapelist = list(image.shape) # [B, frame_num, 3, H, W]
         batch_num = shapelist[0]
         frame_num = shapelist[1]
 
-        reshaped_image = image.reshape(batch_num * frame_num, *shapelist[2:])
-        z = self.image_feature_extractor(reshaped_image).reshape(batch_num, frame_num, -1)
+        reshaped_image = image.reshape(batch_num * frame_num, *shapelist[2:]) # [B*frame_num, 3, H, W]
+        z = self.image_feature_extractor(reshaped_image).reshape(batch_num, frame_num, -1) # [B, frame_num, 384]
         if training:
             pose_encoding = camera_to_pose_encoding(gt_cameras, pose_encoding_type=self.pose_encoding_type)
 
@@ -125,16 +125,20 @@ class PoseDiffusionModel(nn.Module):
 
             return diffusion_results
         else:
-            B, N, _ = z.shape
+            B, N, _ = z.shape # [B, frame_num, 384]
 
-            target_shape = [B, N, self.target_dim]
+            target_shape = [B, N, self.target_dim] # [B, frame_num, 9 (denoiser.target_dim)]
 
             # sampling
             (pose_encoding, pose_encoding_diffusion_samples) = self.diffuser.sample(
                 shape=target_shape, z=z, cond_fn=cond_fn, cond_start_step=cond_start_step
-            )
+            ) #--> target_shape
 
             # convert the encoded representation to PyTorch3D cameras
+            # in: [B, N, (3+4+2)]; 3 for t; 4 for R; 2 for focal len;
+            # out: PerspectiveCameras(focal_length=focal_length, R=R, T=abs_T, device=R.device);
+            # focal_length: List[[fx, fy]];
+            # R: List[{3x3}]; T: List[{1x3}];
             pred_cameras = pose_encoding_to_camera(pose_encoding, pose_encoding_type=self.pose_encoding_type)
 
             diffusion_results = {"pred_cameras": pred_cameras, "z": z}
