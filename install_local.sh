@@ -32,8 +32,7 @@ git clone --recursive https://github.com/cvg/Hierarchical-Localization.git depen
 
 cd dependency/hloc
 python -m pip install -e .
-cd ../../
 
-# Ensure the version of pycolmap is not 0.5.0
-# pip install --upgrade "pycolmap>=0.3.0,<=0.4.0"
+cd ../../
+git clone --recursive https://github.com/zixunh/relpose-plus-plus.git dependency/relpose
 
