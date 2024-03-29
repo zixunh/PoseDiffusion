@@ -29,6 +29,7 @@ from util.utils import seed_all_random_engines
 from util.match_extraction import extract_match
 from util.load_img_folder import load_and_preprocess_images
 from util.geometry_guided_sampling import geometry_guided_sampling
+from util.depth_guided_sampling import depth_guided_sampling
 from util.metric import compute_ARE
 from visdom import Visdom
 
@@ -75,9 +76,7 @@ def demo(cfg: DictConfig) -> None:
     # Perform match extraction
     if cfg.GGS.enable:
         # Optional TODO: remove the keypoints outside the cropped region?
-
         kp1, kp2, i12 = extract_match(image_folder_path=folder_path, image_info=image_info)
-
         if kp1 is not None:
             keys = ["kp1", "kp2", "i12", "img_shape"]
             values = [kp1, kp2, i12, images.shape]
@@ -90,9 +89,26 @@ def demo(cfg: DictConfig) -> None:
             print("[92m=====> Sampling with GGS <=====[0m")
         else:
             cond_fn = None
+
+    elif cfg.DGS.enable:
+        # # Perform match extraction
+        # # Optional TODO: remove the keypoints outside the cropped region?
+        
+        # Without matches extraction
+        kp1, kp2, i12 = extract_match(image_folder_path=folder_path, image_info=image_info)
+        keys = ["kp1", "kp2", "i12", "img_shape"]
+        values = [kp1, kp2, i12, images.shape]
+        matches_dict = dict(zip(keys, values))
+
+        cfg.DGS.pose_encoding_type = cfg.MODEL.pose_encoding_type
+        DGS_cfg = OmegaConf.to_container(cfg.DGS)
+
+        cond_fn = partial(depth_guided_sampling, matches_dict=matches_dict, DGS_cfg=DGS_cfg)
+        print("[92m=====> Sampling with DGS <=====[0m")
+
     else:
         cond_fn = None
-        print("[92m=====> Sampling without GGS <=====[0m")
+        print("[92m=====> Sampling without GGS / DGS <=====[0m")
 
     images = images.unsqueeze(0)
 
@@ -138,11 +154,8 @@ def demo(cfg: DictConfig) -> None:
     # Visualization
     try:
         viz = Visdom()
-
         cams_show = {"ours_pred": pred_cameras, "ours_pred_aligned": pred_cameras_aligned, "gt_cameras": gt_cameras}
-
         fig = plot_scene({f"{folder_path}": cams_show})
-
         viz.plotlyplot(fig, env="visual", win="cams")
     except:
         print("Please check your visdom connection")

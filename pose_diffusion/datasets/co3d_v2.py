@@ -20,6 +20,10 @@ from pytorch3d.renderer import PerspectiveCameras
 from torch.utils.data import Dataset
 from torchvision import transforms
 
+if __name__=="__main__":
+    import sys
+    sys.path.append('../')
+
 from util.normalize_cameras import normalize_cameras
 
 from multiprocessing import Pool
@@ -442,3 +446,10 @@ TRAINING_CATEGORIES = [
 TEST_CATEGORIES = ["ball", "book", "couch", "frisbee", "hotdog", "kite", "remote", "sandwich", "skateboard", "suitcase"]
 
 DEBUG_CATEGORIES = ["apple", "teddybear"]
+
+
+if __name__ == "__main__":
+    co3ddata = Co3dDataset(category=DEBUG_CATEGORIES, \
+                           CO3D_DIR='/data/zixunh/co3d/data/subset_co3d_v2', \
+                           CO3D_ANNOTATION_DIR='/home/vision/zixun/PoseDiffusion/pose_diffusion/data/subset_co3d_v2_anno')
+    print(co3ddata)

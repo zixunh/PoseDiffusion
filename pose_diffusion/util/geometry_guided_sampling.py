@@ -45,21 +45,21 @@ def geometry_guided_sampling(model_mean: torch.Tensor, t: int, matches_dict: Dic
         "pair_idx": pair_idx,
     }
 
-    # conduct GGS
-    model_mean = GGS_optimize(model_mean, t, processed_matches, **GGS_cfg) #[B, frame_num, pose_dim]
+    # # # conduct GGS
+    # model_mean = GGS_optimize(model_mean, t, processed_matches, **GGS_cfg) #[B, frame_num, pose_dim]
 
-    # Optimize FL, R, and T separately
-    model_mean = GGS_optimize(
-        model_mean, t, processed_matches, update_T=False, update_R=False, update_FL=True, **GGS_cfg
-    )  # only optimize FL
+    # # Optimize FL, R, and T separately
+    # model_mean = GGS_optimize(
+    #     model_mean, t, processed_matches, update_T=False, update_R=False, update_FL=True, **GGS_cfg
+    # )  # only optimize FL
 
-    model_mean = GGS_optimize(
-        model_mean, t, processed_matches, update_T=False, update_R=True, update_FL=False, **GGS_cfg
-    )  # only optimize R
+    # model_mean = GGS_optimize(
+    #     model_mean, t, processed_matches, update_T=False, update_R=True, update_FL=False, **GGS_cfg
+    # )  # only optimize R
 
-    model_mean = GGS_optimize(
-        model_mean, t, processed_matches, update_T=True, update_R=False, update_FL=False, **GGS_cfg
-    )  # only optimize T
+    # model_mean = GGS_optimize(
+    #     model_mean, t, processed_matches, update_T=True, update_R=False, update_FL=False, **GGS_cfg
+    # )  # only optimize T
 
     model_mean = GGS_optimize(model_mean, t, processed_matches, **GGS_cfg)
 

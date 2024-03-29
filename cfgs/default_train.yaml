@@ -4,8 +4,8 @@ exp_name: exp001_train
 
 train:
     # Please Specify Your Own Path
-    CO3D_DIR: "/datasets01/co3dv2/080422/"
-    CO3D_ANNOTATION_DIR: "/fsx-repligen/jianyuan/datasets/co3d_relpose/"
+    CO3D_DIR: "/data/zixunh/co3d/data/subset_co3d_v2/"
+    CO3D_ANNOTATION_DIR: "/home/vision/zixun/PoseDiffusion/pose_diffusion/data/subset_co3d_v2_anno/"
     
 
     img_size: 224

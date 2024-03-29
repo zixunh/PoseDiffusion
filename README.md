@@ -24,7 +24,7 @@ conda activate $ENV_NAME
 
 # Install PyTorch, torchvision, and PyTorch3D using pip and prebuilt wheel
 python -m pip install torch==1.13.1+cu116 torchvision==0.14.1+cu116 torchaudio==0.13.1 --extra-index-url https://download.pytorch.org/whl/cu116
-python -m pip install /home/openark/Desktop/PoseDiffusion/pose_diffusion/pytorch3d-0.7.2-cp39-cp39-linux_x86_64.whl
+python -m pip install pytorch3d-0.7.2-cp39-cp39-linux_x86_64.whl
 ```
 ##### HLoc; pycolmap>=0.6.0
 ```
@@ -79,6 +79,8 @@ pred_cameras_aligned = corresponding_cameras_alignment(
 ### 1. Preprocess Annotations
 
 Start by following the instructions [here](https://github.com/amyxlase/relpose-plus-plus#pre-processing-co3d) to preprocess the annotations of the Co3D V2 dataset. This will significantly reduce data processing time during training.
+
+Refer to [synsin](https://github.com/facebookresearch/synsin/blob/main/REALESTATE.md) for RealEstate10k. For small subset, refer to [AttnRend](https://github.com/yilundu/cross_attention_renderer/tree/master).
 
 ### 2. Specify Paths
 
