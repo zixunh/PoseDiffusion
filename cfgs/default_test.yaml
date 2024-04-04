@@ -1,9 +1,6 @@
 seed: 0
 exp_name: exp001_test
 
-
-
-
 test:
     # Please Specify Your Own Path
     CO3D_DIR: "/data/zixunh/co3d/data/subset_co3d_v2/"
@@ -28,7 +25,7 @@ test:
     compute_optical: True
 
 GGS:
-    enable: True
+    enable: False
     start_step: 10
     learning_rate: 0.01
     iter_num: 100

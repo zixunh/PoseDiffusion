@@ -95,10 +95,10 @@ def demo(cfg: DictConfig) -> None:
         # # Optional TODO: remove the keypoints outside the cropped region?
         
         # Without matches extraction
-        kp1, kp2, i12 = extract_match(image_folder_path=folder_path, image_info=image_info)
-        keys = ["kp1", "kp2", "i12", "img_shape"]
-        values = [kp1, kp2, i12, images.shape]
+        keys = [ "img_shape"]
+        values = [ images.shape]
         matches_dict = dict(zip(keys, values))
+        raise NotImplementedError
 
         cfg.DGS.pose_encoding_type = cfg.MODEL.pose_encoding_type
         DGS_cfg = OmegaConf.to_container(cfg.DGS)
@@ -108,7 +108,7 @@ def demo(cfg: DictConfig) -> None:
 
     else:
         cond_fn = None
-        print("[92m=====> Sampling without GGS / DGS <=====[0m")
+        print("[92m=====> Sampling without any refinement <=====[0m")
 
     images = images.unsqueeze(0)
 
@@ -133,6 +133,7 @@ def demo(cfg: DictConfig) -> None:
     # Compute metrics if gt is available
 
     # Load gt poses
+    gt_cameras_dict = None
     if os.path.exists(os.path.join(folder_path, "gt_cameras.npz")):
         gt_cameras_dict = np.load(os.path.join(folder_path, "gt_cameras.npz"))
         gt_cameras = PerspectiveCameras(
@@ -147,6 +148,8 @@ def demo(cfg: DictConfig) -> None:
         # Compute the absolute rotation error
         ARE = compute_ARE(pred_cameras_aligned.R, gt_cameras.R).mean()
         print(f"For {folder_path}: the absolute rotation error is {ARE:.6f} degrees.")
+    elif os.path.exists(os.path.join()): #load gt from jgz file
+        raise NotImplementedError
     else:
         print(f"No GT provided. No evaluation conducted.")
 
@@ -154,7 +157,9 @@ def demo(cfg: DictConfig) -> None:
     # Visualization
     try:
         viz = Visdom()
-        cams_show = {"ours_pred": pred_cameras, "ours_pred_aligned": pred_cameras_aligned, "gt_cameras": gt_cameras}
+        if gt_cameras_dict is not None:
+            cams_show = {"ours_pred": pred_cameras, "ours_pred_aligned": pred_cameras_aligned, "gt_cameras": gt_cameras}
+        else: cams_show = {"ours_pred": pred_cameras}
         fig = plot_scene({f"{folder_path}": cams_show})
         viz.plotlyplot(fig, env="visual", win="cams")
     except:

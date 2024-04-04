@@ -22,7 +22,7 @@ from pytorch3d.ops import corresponding_cameras_alignment
 from pytorch3d.renderer.cameras import PerspectiveCameras
 from pytorch3d.vis.plotly_vis import plot_scene
 
-from datasets.co3d_v2 import TRAINING_CATEGORIES, TEST_CATEGORIES, DEBUG_CATEGORIES
+from datasets.subset_co3d_v2 import TRAINING_CATEGORIES, TEST_CATEGORIES, DEBUG_CATEGORIES
 from util.match_extraction import extract_match
 from util.geometry_guided_sampling import geometry_guided_sampling
 from util.metric import camera_to_rel_deg, calculate_auc_np
